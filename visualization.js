@@ -24,6 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
           .style("padding", "0.5rem")
           .style("pointer-events", "none")
 
+          const yespercent = container.append("div")
+          .style("opacity", 0)
+          .style("position", "fixed")
+          .style("background", "rgba(255,255,255,0.8)")
+          .style("padding", "0.5rem")
+          .style("pointer-events", "none")
+
           const projection = d3.geoAlbers()
           .center([0, 46.7])
           .rotate([-9, 0, 0])
@@ -37,15 +44,10 @@ document.addEventListener("DOMContentLoaded", () => {
           .enter()
           .append("path")
           .attr("d", d => pathGenerator(d))
-          .on("click", function(d) {
-            tooltip
-            .style("opacity", 1)
-            .html(d.ja_anteil)
-          })
           .on("mouseenter", function(d) {
             tooltip
             .style("opacity", 1)
-            .html(d.properties.name)
+            .html(d.name)
           })
           .on("mousemove", function() {
             tooltip
@@ -54,6 +56,14 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .on("mouseleave", function() {
             tooltip.style("opacity", 0)
+          })
+          .on("click", function(d) {
+            yespercent
+            .style("opacity", 1)
+            .html(d.ja_anteil)
+          })
+          .on("mouseleave", function() {
+            yespercent.style("opacity", 0)
           })
           .attr("fill", "#ceccc0")
           .attr("stroke", "#f5f3ef")
@@ -76,14 +86,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
           /* results */
 
-          const results = svg.selectAll("circle")
+          const results = svg.selectAll("path")
             .data(yesVotes)
             .enter()
-            .append("circle")
             .attr("d", d => pathGenerator(d))
-            .on("click", d => {
-              console.log("Data: ", d.ja_anteil)
-            })
             .on("click", function(d) {
               tooltip
               .style("opacity", 1)
