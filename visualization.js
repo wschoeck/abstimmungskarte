@@ -1,8 +1,8 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  const width = 740
-  const height = 500
+  const width = 800
+  const height = 600
 
   const container = d3.select("#viz")
 
@@ -22,24 +22,86 @@ document.addEventListener("DOMContentLoaded", () => {
           .style("position", "fixed")
           .style("background", "rgba(255,255,255,0.8)")
           .style("padding", "0.5rem")
+          .style("padding-top", "0.1rem")
+          .style("padding-bottom", "0.1rem")
           .style("pointer-events", "none")
-
-          const yespercent = container.append("div")
-          .style("opacity", 0)
-          .style("position", "absolute")
-          .style("background", "rgba(37,105,0,0.8)")
-          .style("padding", "0.5rem")
-          .style("pointer-events", "none")
+          .style("font-size", 18 + "px")
 
           const percent = container.append("div")
           .style("opacity", 0)
           .style("position", "absolute")
-          .style("background", "rgba(208,0,27,0.8)")
           .style("padding", "0.5rem")
+          .style("padding-top", "0.1rem")
+          .style("padding-bottom", "0.1rem")
           .style("pointer-events", "none")
+          .style("left", 20 + "px")
+          .style("top", 100 + "px")
+          .style("font-size", 42 + "px")
+          .style("font-weight", "700")
+
+          const yespercent = container.append("div")
+          .style("opacity", 0)
+          .style("position", "absolute")
+          .style("padding", "0.5rem")
+          .style("padding-top", "0.1rem")
+          .style("padding-bottom", "0.1rem")
+          .style("pointer-events", "none")
+          .style("left", 20 + "px")
+          .style("top", 180 + "px")
+          .style("font-size", 42 + "px")
+          .style("font-weight", "700")
+
+          const rectpercent = svg.append("rect")
+          .style("opacity", 0)
+          .attr("x", 10)
+          .attr("y", 105)
+          .attr("width", 120)
+          .attr("height", 4)
+          .attr("fill", "#ce1717")
+
+          const rectyes = svg.append("rect")
+          .style("opacity", 0)
+          .attr("x", 10)
+          .attr("y", 185)
+          .attr("width", 120)
+          .attr("height", 4)
+          .attr("fill", "#2b8e29")
+
+          const textpercent = svg.append("text")
+          .style("opacity", 0)
+          .attr("x", 10)
+          .attr("y", 100)
+          .attr("font-size", 20)
+          .attr("font-family", "Cairo")
+          .attr("fill", "#000000")
+          .style("font-weight", "700")
+          .attr("fill", "#ce1717")
+          .text("Nein");
+
+          const textyes = svg.append("text")
+          .style("opacity", 0)
+          .attr("x", 10)
+          .attr("y", 180)
+          .attr("font-size", 20)
+          .attr("font-family", "Cairo")
+          .attr("fill", "#2b8e29")
+          .style("font-weight", "700")
+          .text("Ja");
+
+          const textheadline = svg.append("text")
+          .attr("x", 10)
+          .attr("y", 40)
+          .attr("font-size", 30)
+          .attr("font-family", "Cairo")
+          .attr("font-weight", "400")
+          .text("Bundesbeschluss über Biometrische Pässe");
+
+          const texttest = container.selectAll("div")
+          .style("font-family", "Cairo")
+
 
           const projection = d3.geoAlbers()
-          .center([0, 46.7])
+          .center([-0.2, 47])
           .rotate([-9, 0, 0])
           .parallels([40, 50])
           .scale(12500)
@@ -54,7 +116,24 @@ document.addEventListener("DOMContentLoaded", () => {
           .on("mouseenter", function(d) {
             tooltip
             .style("opacity", 1)
+            .style("color", "#000000")
             .html(d.name)
+            percent
+            .style("opacity", 1)
+            .style("color", "#000000")
+            .html(100 - d.ja_anteil + "%")
+            yespercent
+            .style("opacity", 1)
+            .style("color", "#000000")
+            .html(d.ja_anteil + "%")
+            textpercent
+            .style("opacity", 1)
+            textyes
+            .style("opacity", 1)
+            rectyes
+            .style("opacity", 1)
+            rectpercent
+            .style("opacity", 1)
           })
           .on("mousemove", function(d) {
             tooltip
@@ -66,22 +145,12 @@ document.addEventListener("DOMContentLoaded", () => {
           })
           .on("mouseleave", function(d) {
             yespercent.style("opacity", 0)
-          })
-          .on("click", function(d) {
-            percent
-            .style("opacity", 1)
-            .html(100 - d.ja_anteil + "%")
-            .style("left", 20 + "px")
-            .style("top", 100 + "px")
-            yespercent
-            .style("opacity", 1)
-            .html(d.ja_anteil + "%")
-            .style("left", 20 + "px")
-            .style("top", 140 + "px")
-          })
-          .on("mouseleave", function(d) {
             percent.style("opacity", 0)
             yespercent.style("opacity", 0)
+            textpercent.style("opacity", 0)
+            textyes.style("opacity", 0)
+            rectyes.style("opacity", 0)
+            rectpercent.style("opacity", 0)
           })
           .attr("fill", "#ceccc0")
           .attr("stroke", "#f5f3ef")
@@ -89,8 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const yescount = yesVotes.find(yes => yes.id == d.properties.id);
 
           const colorScale = d3.scaleThreshold()
-            .domain([30,35,40,45,50,55,60,65,70,100])
-            .range(["#d0001b", "#e0513c", "#ee7e5f", "#f7a684", "#fdceaa", "#d0e0af", "#a6c185", "#7da35b", "#538633", "#256900"])
+            .domain([40,45,50,55,60])
+            .range(['#003a00', '#358736', '#8adc83', '#ff8865', '#e7261a', '#840000'])
 
           return colorScale(yescount.ja_anteil)
 
@@ -107,13 +176,98 @@ document.addEventListener("DOMContentLoaded", () => {
           const results = svg.selectAll("path")
             .data(yesVotes)
             .enter()
-            .attr("d", d => pathGenerator())
 
           /* results */
 
+          const rect = svg.append("rect")
+          .attr("x", 10)
+          .attr("y", 550)
+          .attr("width", 40)
+          .attr("height", 10)
+          .attr("fill", "#d0001b")
+
+          const recttwo = svg.append("rect")
+          .attr("x", 50)
+          .attr("y", 550)
+          .attr("width", 40)
+          .attr("height", 10)
+          .attr("fill", "#e0513c")
+
+          const rectthree = svg.append("rect")
+          .attr("x", 90)
+          .attr("y", 550)
+          .attr("width", 40)
+          .attr("height", 10)
+          .attr("fill", "#ee7e5f")
+
+          const rectfour = svg.append("rect")
+          .attr("x", 130)
+          .attr("y", 550)
+          .attr("width", 40)
+          .attr("height", 10)
+          .attr("fill", "#f7a684")
+
+          const rectfive = svg.append("rect")
+          .attr("x", 170)
+          .attr("y", 550)
+          .attr("width", 40)
+          .attr("height", 10)
+          .attr("fill", "#d0e0af")
+
+          const textnumber = svg.append("text")
+          .attr("x", 10)
+          .attr("y", 540)
+          .attr("font-size", 14)
+          .attr("font-family", "Cairo")
+          .text("Prozent Ja-Stimmen");
+
+          const textone = svg.append("text")
+          .attr("x", 10)
+          .attr("y", 580)
+          .attr("font-size", 14)
+          .attr("font-family", "Cairo")
+          .text("70%");
+
+          const texttwo = svg.append("text")
+          .attr("x", 50)
+          .attr("y", 580)
+          .attr("font-size", 14)
+          .attr("font-family", "Cairo")
+          .text("60%");
+
+          const textthree = svg.append("text")
+          .attr("x", 90)
+          .attr("y", 580)
+          .attr("font-size", 14)
+          .attr("font-family", "Cairo")
+          .text("50%");
+
+          const textfour = svg.append("text")
+          .attr("x", 130)
+          .attr("y", 580)
+          .attr("font-size", 14)
+          .attr("font-family", "Cairo")
+          .text("40%");
+
+          const textfive = svg.append("text")
+          .attr("x", 170)
+          .attr("y", 580)
+          .attr("font-size", 14)
+          .attr("font-family", "Cairo")
+          .text("30%");
+
+          const textquellen = svg.append("text")
+          .attr("x", 650)
+          .attr("y", 580)
+          .attr("font-size", 12)
+          .attr("font-family", "Cairo")
+          .attr("fill", "#838383")
+          .text("Quelle: atlas.bfs.admin.ch");
+
+
 
             /*
-            return yescount.ja_anteil >= 50 ? "#76c770" : "#cb3535";
+            return yescount.ja_anteil >= 50 ? #76c770 : #d90f0f;
             */
 
           // ====================

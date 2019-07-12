@@ -126,18 +126,26 @@ document.addEventListener("DOMContentLoaded", function () {
   d3.json("/cantons.json").then(function (cantons) {
     d3.csv("/referendum.csv").then(function (yesVotes) {
       var tooltip = container.append("div").style("opacity", 0).style("position", "fixed").style("background", "rgba(255,255,255,0.8)").style("padding", "0.5rem").style("pointer-events", "none");
+      var yespercent = container.append("div").style("opacity", 0).style("position", "absolute").style("background", "rgba(37,105,0,0.8)").style("padding", "0.5rem").style("pointer-events", "none");
+      var percent = container.append("div").style("opacity", 0).style("position", "absolute").style("background", "rgba(208,0,27,0.8)").style("padding", "0.5rem").style("pointer-events", "none");
       var projection = d3.geoAlbers().center([0, 46.7]).rotate([-9, 0, 0]).parallels([40, 50]).scale(12500);
       var pathGenerator = d3.geoPath().projection(projection);
       var globe = svg.selectAll("path").data(cantons.features).enter().append("path").attr("d", function (d) {
         return pathGenerator(d);
-      }).on("click", function (d) {
-        tooltip.style("opacity", 1).html(d.ja_anteil);
       }).on("mouseenter", function (d) {
-        tooltip.style("opacity", 1).html(d.properties.name);
-      }).on("mousemove", function () {
+        tooltip.style("opacity", 1).html(d.name);
+      }).on("mousemove", function (d) {
         tooltip.style("left", d3.event.pageX + 5 + "px").style("top", d3.event.pageY + 5 + "px");
-      }).on("mouseleave", function () {
+      }).on("mouseleave", function (d) {
         tooltip.style("opacity", 0);
+      }).on("mouseleave", function (d) {
+        yespercent.style("opacity", 0);
+      }).on("click", function (d) {
+        percent.style("opacity", 1).html(100 - d.ja_anteil + "%").style("left", 20 + "px").style("top", 100 + "px");
+        yespercent.style("opacity", 1).html(d.ja_anteil + "%").style("left", 20 + "px").style("top", 140 + "px");
+      }).on("mouseleave", function (d) {
+        percent.style("opacity", 0);
+        yespercent.style("opacity", 0);
       }).attr("fill", "#ceccc0").attr("stroke", "#f5f3ef").attr("fill", function (d) {
         var yescount = yesVotes.find(function (yes) {
           return yes.id == d.properties.id;
@@ -150,12 +158,8 @@ document.addEventListener("DOMContentLoaded", function () {
       console.log(yesVotes[1].ja_anteil);
       /* results */
 
-      var results = svg.selectAll("circle").data(yesVotes).enter().append("circle").attr("d", function (d) {
-        return pathGenerator(d);
-      }).on("click", function (d) {
-        console.log("Data: ", d.ja_anteil);
-      }).on("click", function (d) {
-        tooltip.style("opacity", 1).html(d.ja_anteil);
+      var results = svg.selectAll("path").data(yesVotes).enter().attr("d", function (d) {
+        return pathGenerator();
       });
       /* results */
 
@@ -196,7 +200,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49329" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50913" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
