@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .attr("y", 105)
           .attr("width", 120)
           .attr("height", 4)
-          .attr("fill", "#ce1717")
+          .attr("fill", "#008100")
 
           const rectyes = svg.append("rect")
           .style("opacity", 0)
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
           .attr("y", 185)
           .attr("width", 120)
           .attr("height", 4)
-          .attr("fill", "#2b8e29")
+          .attr("fill", "#9c0303")
 
           const textpercent = svg.append("text")
           .style("opacity", 0)
@@ -75,8 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
           .attr("font-family", "Cairo")
           .attr("fill", "#000000")
           .style("font-weight", "700")
-          .attr("fill", "#ce1717")
-          .text("Nein");
+          .attr("fill", "#008100")
+          .text("Ja");
 
           const textyes = svg.append("text")
           .style("opacity", 0)
@@ -84,9 +84,9 @@ document.addEventListener("DOMContentLoaded", () => {
           .attr("y", 180)
           .attr("font-size", 20)
           .attr("font-family", "Cairo")
-          .attr("fill", "#2b8e29")
+          .attr("fill", "#9c0303")
           .style("font-weight", "700")
-          .text("Ja");
+          .text("Nein");
 
           const textheadline = svg.append("text")
           .attr("x", 10)
@@ -158,8 +158,8 @@ document.addEventListener("DOMContentLoaded", () => {
           const yescount = yesVotes.find(yes => yes.id == d.properties.id);
 
           const colorScale = d3.scaleThreshold()
-            .domain([40,45,50,55,60])
-            .range(['#003a00', '#358736', '#8adc83', '#ff8865', '#e7261a', '#840000'])
+            .domain([45,47.5,50,52.5,55])
+            .range(['#003d00', '#008100', '#43c834', '#ffa19b', '#d74860', '#880033'])
 
           return colorScale(yescount.ja_anteil)
 
@@ -182,37 +182,44 @@ document.addEventListener("DOMContentLoaded", () => {
           const rect = svg.append("rect")
           .attr("x", 10)
           .attr("y", 550)
-          .attr("width", 40)
+          .attr("width", 60)
           .attr("height", 10)
-          .attr("fill", "#d0001b")
+          .attr("fill", "#880033")
 
           const recttwo = svg.append("rect")
-          .attr("x", 50)
+          .attr("x", 70)
           .attr("y", 550)
-          .attr("width", 40)
+          .attr("width", 60)
           .attr("height", 10)
-          .attr("fill", "#e0513c")
+          .attr("fill", "#d74860")
 
           const rectthree = svg.append("rect")
-          .attr("x", 90)
-          .attr("y", 550)
-          .attr("width", 40)
-          .attr("height", 10)
-          .attr("fill", "#ee7e5f")
-
-          const rectfour = svg.append("rect")
           .attr("x", 130)
           .attr("y", 550)
-          .attr("width", 40)
+          .attr("width", 60)
           .attr("height", 10)
-          .attr("fill", "#f7a684")
+          .attr("fill", "#ffa19b")
+
+          const rectfour = svg.append("rect")
+          .attr("x", 190)
+          .attr("y", 550)
+          .attr("width", 60)
+          .attr("height", 10)
+          .attr("fill", "#43c834")
 
           const rectfive = svg.append("rect")
-          .attr("x", 170)
+          .attr("x", 250)
           .attr("y", 550)
-          .attr("width", 40)
+          .attr("width", 60)
           .attr("height", 10)
-          .attr("fill", "#d0e0af")
+          .attr("fill", "#008100")
+
+          const rectsix = svg.append("rect")
+          .attr("x", 310)
+          .attr("y", 550)
+          .attr("width", 60)
+          .attr("height", 10)
+          .attr("fill", "#003d00")
 
           const textnumber = svg.append("text")
           .attr("x", 10)
@@ -226,35 +233,43 @@ document.addEventListener("DOMContentLoaded", () => {
           .attr("y", 580)
           .attr("font-size", 14)
           .attr("font-family", "Cairo")
-          .text("70%");
+          .text("<45%");
 
           const texttwo = svg.append("text")
-          .attr("x", 50)
+          .attr("x", 70)
           .attr("y", 580)
           .attr("font-size", 14)
           .attr("font-family", "Cairo")
-          .text("60%");
+          .text("<47.5%");
 
           const textthree = svg.append("text")
-          .attr("x", 90)
-          .attr("y", 580)
-          .attr("font-size", 14)
-          .attr("font-family", "Cairo")
-          .text("50%");
-
-          const textfour = svg.append("text")
           .attr("x", 130)
           .attr("y", 580)
           .attr("font-size", 14)
           .attr("font-family", "Cairo")
-          .text("40%");
+          .text("<50%");
 
-          const textfive = svg.append("text")
-          .attr("x", 170)
+          const textfour = svg.append("text")
+          .attr("x", 190)
           .attr("y", 580)
           .attr("font-size", 14)
           .attr("font-family", "Cairo")
-          .text("30%");
+          .text("<52.5%");
+
+          const textfive = svg.append("text")
+          .attr("x", 250)
+          .attr("y", 580)
+          .attr("font-size", 14)
+          .attr("font-family", "Cairo")
+          .text("<55%");
+
+          const textsix = svg.append("text")
+          .attr("x", 310)
+          .attr("y", 580)
+          .attr("font-size", 14)
+          .attr("font-family", "Cairo")
+          .text("<57.5%");
+
 
           const textquellen = svg.append("text")
           .attr("x", 650)
